@@ -64,22 +64,23 @@ function AddPost() {
   return (
     <>
       <Navbar />
-      <h1>Add Post</h1>
+      <h1 style={{fontFamily: "'Poppins', sans-serif", fontWeight: "400", color: "#333"}}>Add Post</h1>
       <div
         className="post-container"
         style={{
-          border: "1px solid red",
+          
           width: "50em",
           margin: "0 auto",
           display: "flex",
           flexDirection: "column",
-          marginTop: "5em",
+          // marginTop: "5em",
           height: "30em",
           alignItems: "center",
+          justifyContent: "center",
         }}
       >
         {/*  set the encoding type to send the multipart data or files through form data. */}
-        <form>
+        <form style={{marginLeft: "12em"}}>
           <input
             type="text"
             name="location"

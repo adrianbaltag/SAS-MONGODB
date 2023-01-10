@@ -83,7 +83,7 @@
   
   .bottom {
     transform: translateY(-5em) rotateX(90deg);
-    background-image: url(../assets/images/egypt-cube.jpg);
+    /* background-image: url(../assets/images/egypt-cube.jpg); */
     background-repeat: no-repeat;
     background-size: cover;
   }
