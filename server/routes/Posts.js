@@ -29,14 +29,14 @@ const {
 
 //========chaining routers because they have same entry point========
 //GET, POST
-router.route("/", passport.authenticate('jwt', { session: false })).post(createPost);
-router.route("/userposts", passport.authenticate('jwt', { session: false })).get(getUserPosts);
-router.route("/adminposts", passport.authenticate('jwt', { session: false })).get(getAdminPosts);
-router.route("/singleuserpost/:id", passport.authenticate('jwt', { session: false })).get(getSingleUserPosts);
-router.route("/post/:id", passport.authenticate('jwt', { session: false })).get(getPost);
-router.route("/postCount", passport.authenticate('jwt', { session: false })).get(getPostCount)
+router.route("/").post(createPost);
+router.route("/userposts").get(getUserPosts);
+router.route("/adminposts").get(getAdminPosts);
+router.route("/singleuserpost/:id").get(getSingleUserPosts);
+router.route("/post/:id").get(getPost);
+router.route("/postCount").get(getPostCount)
 //PUT, DELETE
-router.route("/:id", passport.authenticate('jwt', { session: false })).put(updatePost).delete(deletePost);
-router.route("/", passport.authenticate('jwt', { session: false })).delete(deletePosts);
+router.route("/:id").put(updatePost).delete(deletePost);
+router.route("/").delete(deletePosts);
 
 module.exports = router;

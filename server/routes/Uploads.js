@@ -4,8 +4,8 @@ const {uploading,upload,getImages,getImage} =require('../controllers/uploadContr
 
 const router = express.Router();
 
-router.post('/upload', passport.authenticate('jwt', { session: false }), upload.single('file'),uploading);
-router.get('/', passport.authenticate('jwt', { session: false }), getImages);
-router.get('/:imgId', passport.authenticate('jwt', { session: false }), getImage);
+router.post('/upload', upload.single('file'),uploading);
+router.get('/', getImages);
+router.get('/:imgId', getImage);
 
 module.exports = router;

@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import { styled } from "@mui/material/styles";
 // import Box from '@mui/material/Box';
-import DataTable from "./TableUsers";
+
 import axios from "axios";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
@@ -23,7 +23,7 @@ export default function SimpleContainer() {
   const [users, setUsers] = React.useState(null);
   const [response, setResponse] = React.useState(null);
   const [postCount, setPostCount] = React.useState(null);
-   const [posts, setPosts] = React.useState(null);
+  const [posts, setPosts] = React.useState(null);
 
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -38,7 +38,7 @@ export default function SimpleContainer() {
     axios.get("http://localhost:5000/api/users").then((response) => {
       setUsers(response.data);
     });
-   
+
 
   }, [response]);
   React.useEffect(() => {
@@ -48,7 +48,7 @@ export default function SimpleContainer() {
       setPosts(response.data);
     });
 
-     //get post count
+    //get post count
     axios.get("http://localhost:5000/api/posts/postCount").then((response) => {
       setPostCount(response.data);
 
@@ -89,7 +89,7 @@ export default function SimpleContainer() {
                             <TableCell>ID</TableCell>
                             <TableCell align="right">Name</TableCell>
                             <TableCell align="right">Email</TableCell>
-                            <TableCell align="right">Contact No</TableCell>
+                            
                             <TableCell align="right">Delete</TableCell>
                           </TableRow>
                         </TableHead>
@@ -104,7 +104,7 @@ export default function SimpleContainer() {
                               </TableCell>
                               <TableCell align="right">{row.name}</TableCell>
                               <TableCell align="right">{row.email}</TableCell>
-                              <TableCell align="right">{row.contact}</TableCell>
+                              
                               <TableCell align="right">
                                 <Button onClick={() => deleteUser(row._id)}>Delete</Button>
                               </TableCell>
@@ -119,41 +119,41 @@ export default function SimpleContainer() {
               </Grid>
               <Grid item xs={12} md={6}>
                 <Item>
-                     
-                  <Box sx={{ bgcolor: "#008080" ,padding:'20px',color:'white'}}>
-                   <Typography variant="h4"  >Estimated Post Count : {postCount && postCount}</Typography>
-                    </Box>
-                    <TableContainer component={Paper}>
-                      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                        <TableHead>
-                          <TableRow>
-                            <TableCell>ID</TableCell>
-                            <TableCell align="right">location</TableCell>
-                            <TableCell align="right">AuthorID</TableCell>
-                           
-                          </TableRow>
-                        </TableHead>
-                        <TableBody>
-                          {posts && posts.map((row, index) => (
-                            <TableRow
-                              key={row._id}
-                              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                            >
-                              <TableCell component="th" scope="row">
-                                {index + 1}
-                              </TableCell>
-                              <TableCell align="right">{row.location}</TableCell>
-                              <TableCell align="right">{row.authorID}</TableCell>
-                             
-                              
-                            </TableRow>
-                          ))}
 
-                        </TableBody>
-                      </Table>
-                    </TableContainer>
-                    
-                 
+                  <Box sx={{ bgcolor: "#008080", padding: '20px', color: 'white' }}>
+                    <Typography variant="h4"  >Estimated Post Count : {postCount && postCount}</Typography>
+                  </Box>
+                  <TableContainer component={Paper}>
+                    <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                      <TableHead>
+                        <TableRow>
+                          <TableCell>ID</TableCell>
+                          <TableCell align="right">location</TableCell>
+                          <TableCell align="right">AuthorID</TableCell>
+
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {posts && posts.map((row, index) => (
+                          <TableRow
+                            key={row._id}
+                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                          >
+                            <TableCell component="th" scope="row">
+                              {index + 1}
+                            </TableCell>
+                            <TableCell align="right">{row.location}</TableCell>
+                            <TableCell align="right">{row.authorID}</TableCell>
+
+
+                          </TableRow>
+                        ))}
+
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+
+
                 </Item>
               </Grid>
             </Grid>

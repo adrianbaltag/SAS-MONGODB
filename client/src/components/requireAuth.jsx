@@ -4,7 +4,7 @@ import { useLocation, Navigate, Outlet } from "react-router-dom";
 const RequireAuth = () => {
   // const { user } = useContext(AuthContext);
   // const {loading} = useContext(AuthContext);
-  const location = useLocation();
+ // const location = useLocation();
   
     let user = null;
     let userToken = JSON.parse(localStorage.getItem("token"));

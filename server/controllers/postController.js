@@ -99,7 +99,7 @@ const getSingleUserPosts = asyncHandler(async (req, res) => {
     });
 });
 const getPostCount = asyncHandler(async (req, res) => {
-  const postCount = await Post.estimatedDocumentCount();
+  const postCount = await Post.countDocuments();
   res.json(postCount);
 });
 //export the function to be used in routes

@@ -30,14 +30,7 @@ app.use("/api/images",require('./routes/Uploads'));
 //err handler
 app.use(errHandler);
 
-// const corsOptions ={
-//     origin:'http://localhost:5000/api/posts',
-//     credentials:true,            //access-control-allow-credentials:true
-//     optionSuccessStatus:200
-// }
-// app.use(cors(corsOptions));
 
-//start server // ctrl + c --kill terminal
 app.listen(port, () => {
   console.log(`App listening on port ${port}`);
 });
