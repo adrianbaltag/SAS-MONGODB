@@ -76,6 +76,9 @@
   
   .top {
     transform: translateY(-5em) rotateX(90deg);
+    background-image: url(../assets/images/top.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
   }
   
   .bottom {

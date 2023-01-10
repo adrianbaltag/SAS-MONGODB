@@ -19,12 +19,13 @@ function Cube() {
     <>
       <div className="page-container">
         <div className="cube">
-          <div className="top"></div>
+        
           <div className="bottom" ></div>
           <div className="left" onClick={()=>viewDetails('left')}></div>
           <div className="right" onClick={()=>viewDetails('right')}></div>
           <div className="front" onClick={()=>viewDetails('front')}></div>
           <div className="back" onClick={()=>viewDetails('back')}></div>
+          <div className="top" onClick={()=>viewDetails('top')}></div>
           <div className="cube-shadow"></div>
         </div>
       </div>
