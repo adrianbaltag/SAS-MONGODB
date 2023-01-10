@@ -26,15 +26,7 @@ function App() {
 
   const [user, setUser] = useState(null);
 
-  useEffect(() => {
-    let userToken = JSON.parse(localStorage.getItem("token"));
-    if (userToken !== null) {
-      var user = userToken.split(" ")[1];
-      user = JSON.parse(atob(user.split(".")[1]));
-      console.log("Home: ", user);
-      setUser(user);
-    }
-  }, []);
+
 
   return (
     <div className="App">

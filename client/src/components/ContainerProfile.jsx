@@ -1,18 +1,15 @@
 import "./containerProfile.css";
 import React from 'react';
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useNavigate, createSearchParams } from "react-router-dom";
 import BtnProfile from "./BtnProfile";
 import Button from '@mui/material/Button';
-
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 
-
-
 //fetch id from context api
-const id = "63af0594151ed1332c88f2ad";
+
 function ContainerProfile() {
   let navigate = useNavigate();
   const [listOfPosts, setListOfPosts] = useState([]);
@@ -24,27 +21,41 @@ function ContainerProfile() {
   const [open, setOpen] = useState(false);
   const [idd, setIdd] = useState(null);
   const [value, setValue] = useState(0); // integer state
+    const [userId, setUserId] = useState(null);
 
 
   useEffect(() => {
-   
- 
-    axios
-      .get(`http://localhost:5000/api/posts/singleuserpost/${id}`)
+      let userToken = JSON.parse(localStorage.getItem("token"));
+    if (userToken !== null) {
+      var user = userToken.split(" ")[1];
+      user = JSON.parse(atob(user.split(".")[1]));
+      console.log("Home: ", user._id);
+      setUserId(user._id);
+    }
+    console.log("use effect called");
+    if(listOfPosts?.length === 0 ){
+      axios
+      .get(`http://localhost:5000/api/posts/singleuserpost/${user._id}`)
       .then((response) => {
-        setListOfPosts(response.data);
+        // convert image buffer to base64 and then store in listOfPosts state
+        response?.data?.map((post) => {
+          post.image = `data:image/jpeg;base64,${arrayBufferToBase64(post.image?.img?.data?.data)}`
+        });
+        setListOfPosts(response?.data)
       });
-  }, []); 
+    }
+  }, []);
+
+    useEffect(() => {
+  
+  }, []);
+
   function arrayBufferToBase64(buffer) {
     var binary = '';
     var bytes = [].slice.call(new Uint8Array(buffer));
     bytes.forEach((b) => binary += String.fromCharCode(b));
     return window.btoa(binary);
   };
-
-
-
-
 
   const viewDetails = (id) => {
     navigate({
@@ -64,14 +75,23 @@ function ContainerProfile() {
   };
 
   const editPost = ( location, description, id, image) => {
-
     setLocation(location)
     setcontent(description)
     setImage(image) // id of image
     setOpen(true)
     setIdd(id) //if of post
-
   };
+
+  const handleLocationTextBoxInput =  useCallback(e =>{
+    e.preventDefault();
+    setLocation(e.target.value)
+  }, [])
+
+  const handleContentTextBoxInput =  useCallback(e =>{
+    e.preventDefault();
+    setcontent(e.target.value)
+  }, [])
+
   const editImage = (e) => {
 
     setImage(e.target.files[0]);
@@ -79,9 +99,8 @@ function ContainerProfile() {
 
   }
 
-
   const updatePost = async () => {
- setOpen(false)
+  setOpen(false)
     //upload image to server
     let responseOne = null;
     if (changedImage) {
@@ -91,13 +110,8 @@ function ContainerProfile() {
       responseOne = await axios.post("http://localhost:5000/api/images/upload", data).then(response => {
         console.log(response.data)
         return response.data
-      }
-
-      )
+      })
     }
-
-
-
 
     if (!changedImage) {
       console.log('here')
@@ -107,11 +121,9 @@ function ContainerProfile() {
         image: image,
         authorID: "63af0594151ed1332c88f2ad",
       })
-        .then((response) => {
-
-          console.log("success:", response.data);
-        
-        })
+      .then((response) => {
+        console.log("success:", response.data);
+      })
     }
 
     if (responseOne?.success) {
@@ -122,18 +134,12 @@ function ContainerProfile() {
         image: responseOne.Image._id,
         authorID: "63af0594151ed1332c88f2ad",
       })
-        .then((response) => {
-
-          console.log("success:", response.data);
-        
-        })
+      .then((response) => {
+        console.log("success:", response.data);
+      })
     }
-
-     window.location.reload(true);
-   
+    window.location.reload(true);
   };
-
-
 
   return (
     <div>
@@ -145,13 +151,11 @@ function ContainerProfile() {
          <div className="mainContainer">
         {/* get all posts */}
         {listOfPosts.map((value, key) => {
-          let array = value.image?.img?.data?.data
-          let binaryString = `data:image/jpeg;base64,${arrayBufferToBase64(array)}`
 
           return (
             <div className="card1" key={key}>
               <img onClick={() => viewDetails(value._id)}
-                src={binaryString}
+                src={value.image}
                 style={{cursor:'pointer', width: "100%", height: "15em" }}
               />
               <div className="container1">
@@ -160,9 +164,8 @@ function ContainerProfile() {
               </div>
               <div className="image">
                 <span
-
                   className="material-symbols-outlined" style={{ color: 'red', marginRight: '20px', width: '20px' ,cursor:'pointer'}}
-                  onClick={() => deletePost( value._id)}
+                  onClick={() => deletePost(value._id)}
                 >
                   delete
                 </span>
@@ -171,10 +174,7 @@ function ContainerProfile() {
                   onClick={() => editPost(value.location, value.description, value._id, value.image._id)}>
                   edit
                 </span>
-
               </div>
-
-
             </div>
           );
         })}
@@ -182,7 +182,7 @@ function ContainerProfile() {
 
       {open && <div className="formContainer">
           <Box
-          className="form"
+            className="form"
             component="form"
             sx={{
               '& .MuiTextField-root': { m: 1, width: '60ch' },
@@ -190,24 +190,20 @@ function ContainerProfile() {
             noValidate
             autoComplete="off"
           >
-
-           
-              <TextField onChange={(e) => setLocation(e.target.value)}  id="outlined-basic" label="Location"
+              <TextField onChange={handleLocationTextBoxInput}  id="outlined-basic" label="Location"
                 value={location} variant="outlined" margin="normal" />
             
               <TextField
-              type="file"
-              name="file"
+                type="file"
+                name="file"
+                onChange={editImage}
+              />
 
-              onChange={editImage}
-            />
-
-            <TextField onChange={(e) => setcontent(e.target.value)} multiline={true}  id="outlined-basic"
+            <TextField onChange={handleContentTextBoxInput} multiline={true}  id="outlined-basic"
               value={content} minRows={6} maxRows={6} label="Tell Your Story" variant="outlined" margin="normal" />
             <Button style={{width:'100px'}} variant="contained" color="primary" onClick={updatePost}>Update</Button>
           </Box> 
             </div>}
-      
     </div>
   );
 }

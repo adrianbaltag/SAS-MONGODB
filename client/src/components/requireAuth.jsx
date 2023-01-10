@@ -17,7 +17,7 @@ const RequireAuth = () => {
 
   return(
     (user?._id)
-        ? <Outlet />
+        ? <Outlet /> //display the nect matching child route
         : (<h1>Unauthorized</h1>)
   )
 }

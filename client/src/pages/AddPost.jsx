@@ -1,7 +1,7 @@
 import React from "react";
 import Navbar from "../components/Navbar";
 import axios from "axios";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 
 function AddPost() {
   const [title, setTitle] = useState("");
@@ -10,6 +10,19 @@ function AddPost() {
   const [image, setImage] = useState("");
    const[imageId,setImageId] = React.useState(null)
     const[imageData,setImageData] = useState(null)
+     const [userId, setUserId] = useState(null);
+
+
+    
+    useEffect(() => {
+    let userToken = JSON.parse(localStorage.getItem("token"));
+    if (userToken !== null) {
+      var user = userToken.split(" ")[1];
+      user = JSON.parse(atob(user.split(".")[1]));
+      console.log("Home: ", user._id);
+      setUserId(user._id);
+    }
+  }, []);
 
   //make sure to fetch the id from context api and add it dynamiccaly to the post request here, I am hardcoding it for now
   const createPost = async (e) => {
@@ -24,12 +37,14 @@ function AddPost() {
    }
  
      )
+
+
   if (responseOne.success){
      axios.post("http://localhost:5000/api/posts/", {
         location,
         description: content,
         image:responseOne.Image._id,
-        authorID: "63af0594151ed1332c88f2ad",
+        authorID: userId,
       })
       .then((response) => {
        
